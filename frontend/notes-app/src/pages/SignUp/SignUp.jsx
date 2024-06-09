@@ -1,42 +1,71 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
+
 import PasswordInput from "../../components/input/PasswordInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance"; // Ensure axiosInstance is imported
+import Navbar from "../../components/Navbar";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // Added password state
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     // Add sign-up logic here
 
-    if(!name){
-        setError("Please enter your name");
-        return;
+    if (!name) {
+      setError("Please enter your name");
+      return;
     }
 
-    if(!validateEmail(email)){
-        setError("Please enter a valid email");
-        return;
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email");
+      return;
     }
 
-    if(!password){
-        setError("Please enter the password");
-        return;
+    if (!password) {
+      setError("Please enter the password");
+      return;
     }
 
-    setError('');
+    setError("");
 
-    
+    try {
+      const response = await axiosInstance.post("/create-account", {
+        fullName: name,
+        email: email,
+        password: password,
+      });
+
+      if (response.data && response.data.error) {
+        setError(response.data.message);
+        return;
+      }
+
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <div className="flex items-center justify-center mt-28">
         <div className="w-96 border rounded bg-white px-7 py-10">
           <form onSubmit={handleSignUp}>
