@@ -26,7 +26,7 @@ const Login = () => {
     setError("");
 
     try{
-      const response = await axiosInstance.post("https://scribble-backend.vercel.app/login",{
+      const response = await axiosInstance.post("https://scribble-backend-fez5shucr-sudhanshusr007s-projects.vercel.app/login",{
         email:email,
         password:password,
       });

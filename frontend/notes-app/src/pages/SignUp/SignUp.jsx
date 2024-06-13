@@ -35,7 +35,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      const response = await axiosInstance.post("https://scribble-backend.vercel.app/create-account", {
+      const response = await axiosInstance.post("https://scribble-backend-fez5shucr-sudhanshusr007s-projects.vercel.app/create-account", {
         fullName: name,
         email: email,
         password: password,

@@ -1,1 +1,1 @@
-export const BASE_URL = 'scribble-backend-p5x8je716-sudhanshusr007s-projects.vercel.app'
+export const BASE_URL = 'https://scribble-backend-fez5shucr-sudhanshusr007s-projects.vercel.app/'
