@@ -27,12 +27,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "https://scribble-frontend-cyan.vercel.app",
-    methods: ["POST","PUT","GET","DELETE"]
-  })
-);
+const corsOptions = {
+  origin: "https://scribble-frontend-cyan.vercel.app",
+  methods: ["POST", "PUT", "GET", "DELETE"]
+};
+
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.json({ data: "hello" });
