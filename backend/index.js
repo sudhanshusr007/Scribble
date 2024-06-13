@@ -29,7 +29,9 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "*",
+    origin: "scribble-1mpcgjyuw-sudhanshusr007s-projects.vercel.app",
+    method:["POST","PUT","GET","DELETE"],
+    credentials:true
   })
 );
 
