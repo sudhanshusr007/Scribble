@@ -29,7 +29,6 @@ app.use(express.json());
 
 const corsOptions = {
   origin: "https://scribble-frontend-cyan.vercel.app",
-  methods: ["POST", "PUT", "GET", "DELETE"]
 };
 
 app.use(cors(corsOptions));
