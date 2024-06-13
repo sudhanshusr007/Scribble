@@ -11,7 +11,7 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
 
   const addNewNote = async () => {
     try {
-      const response = await axiosInstance.post("/add-note", {
+      const response = await axiosInstance.post("https://scribble-backend.vercel.app/add-note", {
         title,
         content,
         tags,
@@ -35,7 +35,7 @@ const AddEditNotes = ({ noteData, type, getAllNotes, onClose, showToastMessage }
   const editNote = async () => {
     const noteId = noteData._id;
     try {
-      const response = await axiosInstance.put("/edit-note/" + noteId, {
+      const response = await axiosInstance.put("https://scribble-backend.vercel.app/edit-note/" + noteId, {
         title,
         content,
         tags,

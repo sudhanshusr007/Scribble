@@ -139,7 +139,7 @@ app.get("/get-user",authenticateToken,async(req,res)=>{
   });
 
   if(!isUser){
-    return res.senStatus(401);
+    return res.sendStatus(401);
   }
 
   return res.json({

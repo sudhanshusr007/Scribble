@@ -26,14 +26,14 @@ const Login = () => {
     setError("");
 
     try{
-      const response = await axiosInstance.post("/login",{
+      const response = await axiosInstance.post("https://scribble-backend.vercel.app/login",{
         email:email,
         password:password,
       });
 
       if(response.data && response.data.accessToken){
         localStorage.setItem('token',response.data.accessToken)
-        navigate('/dashboard')
+        navigate('https://scribble-backend.vercel.app/dashboard')
       }
     }catch(error){
       if(error.response && error.response.data && error.response.data.message){
@@ -71,7 +71,7 @@ const Login = () => {
             </button>
             <p className="text-sm text-center mt-4">
               Not registered yet?{" "}
-              <Link to="/signUp" className="font-medium text-primary underline">
+              <Link to="https://scribble-backend.vercel.app/signUp" className="font-medium text-primary underline">
                 Create an Account
               </Link>
             </p>

@@ -8,9 +8,10 @@ const App = () => {
   return (
     <Router>
     <Routes>
-      <Route path='/' exact element={<Home></Home>}></Route>
-      <Route path='/login' exact element={<Login/>}></Route>
-      <Route path='/signup' exact element={<SignUp/>}></Route>
+      <Route path='https://scribble-backend.vercel.app/' exact element={<Home></Home>}></Route>
+      <Route path='https://scribble-backend.vercel.app/dashboard' exact element={<Home></Home>}></Route>
+      <Route path='https://scribble-backend.vercel.app/login' exact element={<Login/>}></Route>
+      <Route path='https://scribble-backend.vercel.app/signup' exact element={<SignUp/>}></Route>
     </Routes>
   </Router>
   )
