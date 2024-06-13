@@ -4,21 +4,15 @@ import Home from './pages/Home/Home'
 import Login from './pages/Login/Login';
 import SignUp from './pages/SignUp/SignUp';
 
-
-const routes = (
-  <Router>
+const App = () => {
+  return (
+    <Router>
     <Routes>
-      <Route path='/dashboard' exact element={<Home></Home>}></Route>
+      <Route path='/' exact element={<Home></Home>}></Route>
       <Route path='/login' exact element={<Login/>}></Route>
       <Route path='/signup' exact element={<SignUp/>}></Route>
     </Routes>
   </Router>
-);
-const App = () => {
-  return (
-    <div>
-      {routes}
-    </div>
   )
 }
 
