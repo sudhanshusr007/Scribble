@@ -1,8 +1,7 @@
 import axios from "axios";
-import {BASE_URL} from './constants'
 
 const axiosInstance = axios.create({
-    baseURL: BASE_URL,
+    baseURL:'https://scribble-backend-8ikx.onrender.com',
     timeout:10000,
     header:{
         "Content_Type": "application/json",

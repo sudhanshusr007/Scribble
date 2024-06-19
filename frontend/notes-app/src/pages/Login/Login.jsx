@@ -26,7 +26,7 @@ const Login = () => {
     setError("");
 
     try{
-      const response = await axiosInstance.post(`${BASE_URL}/login`,{
+      const response = await axiosInstance.post('https://scribble-backend-8ikx.onrender.com/login',{
         email:email,
         password:password,
       });

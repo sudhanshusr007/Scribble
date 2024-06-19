@@ -52,7 +52,7 @@ const Home = () => {
 
   const getUserInfo = async()=>{
     try{
-      const response = await axiosInstance.get(`${BASE_URL}/get-user`);
+      const response = await axiosInstance.get('https://scribble-backend-8ikx.onrender.com/get-user');
       if(response.data && response.data.user){
         setUserInfo(response.data.user)
       }
@@ -60,7 +60,7 @@ const Home = () => {
     catch(error){
       if(error.response.status === 401){
         localStorage.clear();
-        navigate(`${BASE_URL}/login`);
+        navigate('/login');
       }
     }
   };
@@ -68,7 +68,7 @@ const Home = () => {
 
   const getAllNotes = async()=>{
     try{
-      const response = await axiosInstance.get(`${BASE_URL}/get-all-notes`);
+      const response = await axiosInstance.get('https://scribble-backend-8ikx.onrender.com/get-all-notes');
       if(response.data && response.data.notes){
         setAllNotes(response.data.notes);
       }
@@ -82,7 +82,7 @@ const Home = () => {
 
     const noteId = data._id;
     try {
-      const response = await axiosInstance.delete(`${BASE_URL}/delete-note/` + noteId);
+      const response = await axiosInstance.delete('https://scribble-backend-8ikx.onrender.com/delete-note/' + noteId);
 
       if (response.data && !response.data.error) {
         showToastMessage("Note Deleted Successfully",'delete');
@@ -101,7 +101,7 @@ const Home = () => {
 
   const onSearchNote = async(query)=>{
     try{
-      const response = await axiosInstance.get(`${BASE_URL}/search-notes`,{
+      const response = await axiosInstance.get('https://scribble-backend-8ikx.onrender.com/search-notes',{
         params:{query},
       });
       if(response.data && response.data.notes){
@@ -117,7 +117,7 @@ const Home = () => {
   const updateIsPinned = async(noteData)=>{
     const noteId = noteData._id;
     try {
-      const response = await axiosInstance.put(`${BASE_URL}/update-note-pinned/` + noteId, {
+      const response = await axiosInstance.put('https://scribble-backend-8ikx.onrender.com/update-note-pinned/' + noteId, {
        isPinned: !noteId.isPinned
       });
 

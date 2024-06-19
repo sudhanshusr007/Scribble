@@ -36,7 +36,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      const response = await axiosInstance.post(`${BASE_URL}/create-account`, {
+      const response = await axiosInstance.post('https://scribble-backend-8ikx.onrender.com/create-account', {
         fullName: name,
         email: email,
         password: password,
@@ -49,7 +49,7 @@ const SignUp = () => {
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate(`${BASE_URL}/dashboard`);
+        navigate('/dashboard');
       }
     } catch (error) {
       if (
