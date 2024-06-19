@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance"; // Ensure axiosInstance is imported
 import Navbar from "../../components/Navbar";
+import { BASE_URL } from "../../utils/constants";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -35,7 +36,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      const response = await axiosInstance.post("https://scribble-backend-fez5shucr-sudhanshusr007s-projects.vercel.app/create-account", {
+      const response = await axiosInstance.post(`${BASE_URL}/create-account`, {
         fullName: name,
         email: email,
         password: password,
@@ -48,7 +49,7 @@ const SignUp = () => {
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
+        navigate(`${BASE_URL}/dashboard`);
       }
     } catch (error) {
       if (
@@ -95,7 +96,7 @@ const SignUp = () => {
             </button>
             <p className="text-sm text-center mt-4">
               Already have an Account?{" "}
-              <Link to="/login" className="font-medium text-primary underline">
+              <Link to= '/login' className="font-medium text-primary underline">
                 Login
               </Link>
             </p>

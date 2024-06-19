@@ -11,6 +11,7 @@ import Toast from "../../components/ToastMessage/Toast";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import AddNotesImg from '../../assets/images/add-note.svg'
 import NoDataImg from '../../assets/images/no-data.svg'
+import { BASE_URL } from "../../utils/constants";
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
@@ -51,7 +52,7 @@ const Home = () => {
 
   const getUserInfo = async()=>{
     try{
-      const response = await axiosInstance.get('https://scribble-backend.vercel.app/get-user');
+      const response = await axiosInstance.get(`${BASE_URL}/get-user`);
       if(response.data && response.data.user){
         setUserInfo(response.data.user)
       }
@@ -59,7 +60,7 @@ const Home = () => {
     catch(error){
       if(error.response.status === 401){
         localStorage.clear();
-        navigate('/login');
+        navigate(`${BASE_URL}/login`);
       }
     }
   };
@@ -67,7 +68,7 @@ const Home = () => {
 
   const getAllNotes = async()=>{
     try{
-      const response = await axiosInstance.get('https://scribble-backend.vercel.app/get-all-notes');
+      const response = await axiosInstance.get(`${BASE_URL}/get-all-notes`);
       if(response.data && response.data.notes){
         setAllNotes(response.data.notes);
       }
@@ -81,7 +82,7 @@ const Home = () => {
 
     const noteId = data._id;
     try {
-      const response = await axiosInstance.delete("https://scribble-backend.vercel.app/delete-note/" + noteId);
+      const response = await axiosInstance.delete(`${BASE_URL}/delete-note/` + noteId);
 
       if (response.data && !response.data.error) {
         showToastMessage("Note Deleted Successfully",'delete');
@@ -100,7 +101,7 @@ const Home = () => {
 
   const onSearchNote = async(query)=>{
     try{
-      const response = await axiosInstance.get('https://scribble-backend.vercel.app/search-notes',{
+      const response = await axiosInstance.get(`${BASE_URL}/search-notes`,{
         params:{query},
       });
       if(response.data && response.data.notes){
@@ -116,7 +117,7 @@ const Home = () => {
   const updateIsPinned = async(noteData)=>{
     const noteId = noteData._id;
     try {
-      const response = await axiosInstance.put("https://scribble-backend.vercel.app/update-note-pinned/" + noteId, {
+      const response = await axiosInstance.put(`${BASE_URL}/update-note-pinned/` + noteId, {
        isPinned: !noteId.isPinned
       });
 
