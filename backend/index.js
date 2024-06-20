@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utilities");
 const User = require("./models/user.model");
 const Note = require("./models/note.model");
-
+const cookieParser = require('cookie-parser');
 // Mongoose connection with error handling
 mongoose
   .connect(process.env.connectionString, {
@@ -33,6 +33,13 @@ app.use(
 
 app.get("/", (req, res) => {
   res.json({ data: "hello" });
+});
+
+app.use(cookieParser());
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('token'); // Clear the cookie containing the JWT token
+  res.status(200).send('Logged out successfully');
 });
 
 app.post("/create-account", async (req, res) => {
@@ -130,27 +137,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/get-user", authenticateToken, async (req, res) => {
-  const { user } = req.user;
-  const isUser = await User.findOne({
-    _id: user._id,
-  });
-
-  if (!isUser) {
-    return res.sendStatus(401);
-  }
-
-  return res.json({
-    user: {
-      fullName: isUser.fullName,
-      email: isUser.email,
-      _id: isUser._id,
-      createdOn: isUser.createdOn,
-    },
-    message: "",
-  });
-});
-
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
   const { user } = req.user;
@@ -232,23 +218,45 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   }
 });
 
-app.get("/get-all-notes/", authenticateToken, async (req, res) => {
-  const { user } = req.user;
-
+app.get("/get-user", authenticateToken, async (req, res) => {
   try {
-    const notes = await Note.find({
-      userId: user._id,
-    }).sort({ isPinned: -1 });
+    console.log("Authenticated user:", req.user);
+    const user = req.user;
+    const isUser = await User.findById(user._id);
+
+    if (!isUser) {
+      return res.sendStatus(401);
+    }
+
+    return res.json({
+      user: {
+        fullName: isUser.fullName,
+        email: isUser.email,
+        _id: isUser._id,
+        createdOn: isUser.createdOn,
+      },
+      message: "",
+    });
+  } catch (error) {
+    console.error("Error in /get-user:", error);
+    return res.status(500).json({ error: true, message: "Internal Server Error" });
+  }
+});
+
+app.get("/get-all-notes", authenticateToken, async (req, res) => {
+  try {
+    console.log("Authenticated user:", req.user);
+    const user = req.user;
+
+    const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1 });
     return res.json({
       error: false,
       notes,
-      message: "All notes retrived successfully",
+      message: "All notes retrieved successfully",
     });
   } catch (error) {
-    return res.status(500).json({
-      error: true,
-      message: "Internal Server Error",
-    });
+    console.error("Error in /get-all-notes:", error);
+    return res.status(500).json({ error: true, message: "Internal Server Error" });
   }
 });
 
