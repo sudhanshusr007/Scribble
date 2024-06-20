@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
@@ -9,9 +9,32 @@ import { BASE_URL } from "../../utils/constants";
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // Added password state
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseUser = await axiosInstance.get("/get-user");
+        const responseNotes = await axiosInstance.get("/get-all-notes");
+        if (responseUser.data && responseNotes.data) {
+          // Navigate to the dashboard only if both requests succeed
+          navigate("/dashboard");
+        }
+      } catch (error) {
+        console.error("Error retrieving user data or notes:", error);
+        setError("Failed to fetch user data or notes");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (loading) {
+      fetchData();
+    }
+  }, [loading, navigate]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -32,9 +55,10 @@ const SignUp = () => {
     }
 
     setError("");
+    setLoading(true); // Start loading indicator
 
     try {
-      const response = await axiosInstance.post('/create-account', {
+      const response = await axiosInstance.post("/create-account", {
         fullName: name,
         email: email,
         password: password,
@@ -42,26 +66,17 @@ const SignUp = () => {
 
       if (response.data && response.data.error) {
         setError(response.data.message);
+        setLoading(false); // Stop loading indicator
         return;
       }
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        // Navigate to the dashboard after a delay of 2-3 seconds
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000); // 2000 milliseconds = 2 seconds
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
-        setError(error.response.data.message);
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
+      console.error("Error creating account:", error);
+      setError("An unexpected error occurred. Please try again.");
+      setLoading(false); // Stop loading indicator
     }
   };
 
@@ -93,11 +108,11 @@ const SignUp = () => {
             {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
             <button type="submit" className="btn-primary">
-              Create an Account
+              {loading ? "Creating Account..." : "Create an Account"}
             </button>
             <p className="text-sm text-center mt-4">
               Already have an Account?{" "}
-              <Link to='/login' className="font-medium text-primary underline">
+              <Link to="/login" className="font-medium text-primary underline">
                 Login
               </Link>
             </p>
