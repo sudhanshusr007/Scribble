@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { useNavigate } from 'react-router-dom';
-import ProfileInfo from './Cards/ProfileInfo';
-import SearchBar from './SearchBar/SearchBar';
+import { useNavigate } from "react-router-dom";
+import ProfileInfo from "./Cards/ProfileInfo";
+import SearchBar from "./SearchBar/SearchBar";
 
-
-const Navbar = ({ userInfo, onSearchNote,handleClearSearch }) => {
+const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const onLogout = () => {
-    localStorage.clear();
     navigate("/login");
   };
 
   const handleSearch = () => {
     // Implement search functionality
-    if(searchQuery){
+    if (searchQuery) {
       onSearchNote(searchQuery);
     }
   };
@@ -39,7 +37,6 @@ const Navbar = ({ userInfo, onSearchNote,handleClearSearch }) => {
         onClearSearch={onClearSearch}
       />
       <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
-      
     </div>
   );
 };
