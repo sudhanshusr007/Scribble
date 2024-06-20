@@ -15,6 +15,9 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
+    // Clear any previous session tokens
+    localStorage.removeItem("token");
+
     // Client-side validation
     if (!name) {
       setError("Please enter your name");
