@@ -4,6 +4,7 @@ import PasswordInput from "../../components/input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance"; // Ensure axiosInstance is imported
 import Navbar from "../../components/Navbar";
+import { BASE_URL } from "../../utils/constants";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -15,10 +16,6 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    // Clear any previous session tokens
-    localStorage.removeItem("token");
-
-    // Client-side validation
     if (!name) {
       setError("Please enter your name");
       return;
@@ -34,7 +31,7 @@ const SignUp = () => {
       return;
     }
 
-    setError(""); // Clear previous error messages
+    setError("");
 
     try {
       const response = await axiosInstance.post('/create-account', {
@@ -50,10 +47,17 @@ const SignUp = () => {
 
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate('/dashboard');
+        // Navigate to the dashboard after a delay of 2-3 seconds
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000); // 2000 milliseconds = 2 seconds
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
@@ -76,7 +80,7 @@ const SignUp = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <input
-              type="email" // Change to email input type for better validation
+              type="text"
               placeholder="Email"
               className="input-box"
               value={email}
@@ -93,7 +97,7 @@ const SignUp = () => {
             </button>
             <p className="text-sm text-center mt-4">
               Already have an Account?{" "}
-              <Link to="/login" className="font-medium text-primary underline">
+              <Link to='/login' className="font-medium text-primary underline">
                 Login
               </Link>
             </p>
