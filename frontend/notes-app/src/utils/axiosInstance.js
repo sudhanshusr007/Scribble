@@ -1,22 +1,22 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL:'https://scribble-backend-8ikx.onrender.com',
-    timeout:10000,
-    header:{
-        "Content_Type": "application/json",
+    baseURL: 'https://scribble-backend-8ikx.onrender.com',
+    timeout: 10000,
+    headers: {
+        "Content-Type": "application/json",
     },
 });
 
 axiosInstance.interceptors.request.use(
-    (config)=>{
+    (config) => {
         const accessToken = localStorage.getItem('token');
-        if(accessToken){
+        if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
     },
-    (error)=>{
+    (error) => {
         return Promise.reject(error);
     }
 );

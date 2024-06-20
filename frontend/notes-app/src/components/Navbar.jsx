@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {axiosInstance}  from '../utils/axiosInstance'
 import { useNavigate } from "react-router-dom";
 import ProfileInfo from "./Cards/ProfileInfo";
 import SearchBar from "./SearchBar/SearchBar";
@@ -8,8 +8,17 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const onLogout = () => {
-    navigate("/login");
+  const onLogout = async () => {
+    try {
+      await axiosInstance.post('/logout');
+
+      localStorage.clear();
+
+ 
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const handleSearch = () => {

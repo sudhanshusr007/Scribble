@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-
-import PasswordInput from "../../components/input/PasswordInput";
 import { Link, useNavigate } from "react-router-dom";
+import PasswordInput from "../../components/input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance"; // Ensure axiosInstance is imported
 import Navbar from "../../components/Navbar";
-import { BASE_URL } from "../../utils/constants";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -16,8 +14,8 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    // Add sign-up logic here
 
+    // Client-side validation
     if (!name) {
       setError("Please enter your name");
       return;
@@ -33,10 +31,10 @@ const SignUp = () => {
       return;
     }
 
-    setError("");
+    setError(""); // Clear previous error messages
 
     try {
-      const response = await axiosInstance.post('https://scribble-backend-8ikx.onrender.com/create-account', {
+      const response = await axiosInstance.post('/create-account', {
         fullName: name,
         email: email,
         password: password,
@@ -48,14 +46,11 @@ const SignUp = () => {
       }
 
       if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
         navigate('/dashboard');
       }
     } catch (error) {
-      if (
-        error.response &&
-        error.response.data &&
-        error.response.data.message
-      ) {
+      if (error.response && error.response.data && error.response.data.message) {
         setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");
@@ -65,7 +60,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="flex items-center justify-center mt-28">
         <div className="w-96 border rounded bg-white px-7 py-10">
           <form onSubmit={handleSignUp}>
@@ -78,7 +73,7 @@ const SignUp = () => {
               onChange={(e) => setName(e.target.value)}
             />
             <input
-              type="text"
+              type="email" // Change to email input type for better validation
               placeholder="Email"
               className="input-box"
               value={email}
@@ -95,7 +90,7 @@ const SignUp = () => {
             </button>
             <p className="text-sm text-center mt-4">
               Already have an Account?{" "}
-              <Link to= '/login' className="font-medium text-primary underline">
+              <Link to="/login" className="font-medium text-primary underline">
                 Login
               </Link>
             </p>
