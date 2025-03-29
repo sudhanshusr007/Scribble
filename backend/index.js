@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("./utilities");
 const User = require("./models/user.model");
 const Note = require("./models/note.model");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 // Mongoose connection with error handling
 mongoose
   .connect(process.env.connectionString, {
@@ -25,11 +25,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.json({ data: "hello" });
@@ -37,9 +33,9 @@ app.get("/", (req, res) => {
 
 app.use(cookieParser());
 
-app.post('/logout', (req, res) => {
-  res.clearCookie('token'); // Clear the cookie containing the JWT token
-  res.status(200).send('Logged out successfully');
+app.post("/logout", (req, res) => {
+  res.clearCookie("token"); // Clear the cookie containing the JWT token
+  res.status(200).send("Logged out successfully");
 });
 
 app.post("/create-account", async (req, res) => {
@@ -239,7 +235,9 @@ app.get("/get-user", authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error("Error in /get-user:", error);
-    return res.status(500).json({ error: true, message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
   }
 });
 
@@ -256,7 +254,9 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error("Error in /get-all-notes:", error);
-    return res.status(500).json({ error: true, message: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
   }
 });
 
