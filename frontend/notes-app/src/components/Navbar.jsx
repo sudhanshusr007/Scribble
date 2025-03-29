@@ -10,7 +10,7 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
 
   const onLogout = async () => {
     try {
-      await axiosInstance.post('/logout');
+      await axiosInstance.post('https://scribble-server-z5ir.onrender.com/logout');
 
       localStorage.clear();
 

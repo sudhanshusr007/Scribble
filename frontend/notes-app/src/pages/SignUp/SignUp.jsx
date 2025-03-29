@@ -34,7 +34,7 @@ const SignUp = () => {
     setError("");
 
     try {
-      const response = await axiosInstance.post('/create-account', {
+      const response = await axiosInstance.post('https://scribble-server-z5ir.onrender.com/create-account', {
         fullName: name,
         email: email,
         password: password,
